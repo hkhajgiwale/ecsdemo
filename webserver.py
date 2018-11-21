@@ -12,11 +12,14 @@ import time
 import logging
 import traceback
 import os
+import subprocess
 import sys
 import threading
 import time
 import random
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+import requests
 
 PORT = os.environ.get('PORT', 8080)
 VER = os.environ.get('VER', 'VER not set')
@@ -29,7 +32,7 @@ def cpu_load_thread():
     while True:
         if not load_cpu:
             break
-        for i in range(1000 * 1000 * 1): # 1Mil loops take about 1.1 seconds
+        for i in range(1000 * 1000 * 10): # 10Mil loops take about 11 seconds
             x = random.randint(0, 1000)
             y = x*x
     log.info('Cpu load ended.')
@@ -83,9 +86,30 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status_code)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        content = content + '\n\n%s' % (VER,)
+        content = content + self._get_footer()
         c = bytes(content, 'UTF-8')
         self.wfile.write(c)
+
+    def _get_footer(self):
+        pid = os.getpid()
+        instance_id = self._get_instance_id()
+        container_id = self._get_container_id()
+        return '\n\nVER: %s\npid: %s\ninstance_id: %s\ncontainer_id: %s' % (VER, pid, instance_id, container_id)
+
+    def _get_instance_id(self):
+        try:
+            r = requests.get("http://169.254.169.254/latest/dynamic/instance-identity/document")
+            iid = r.json()['instanceId']
+        except Exception as fault:
+            iid = str(fault)
+        return iid
+
+    def _get_container_id(self):
+        try:
+            cid = subprocess.getoutput('cat /proc/1/cpuset')
+        except Exception as fault:
+            cid = str(fault)            
+        return cid
 
 def init_logger():
     log = logging.getLogger(__name__)
