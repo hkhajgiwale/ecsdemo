@@ -94,7 +94,7 @@ class Handler(BaseHTTPRequestHandler):
         pid = os.getpid()
         instance_id = self._get_instance_id()
         container_id = self._get_container_id()
-        return '\n\nVER: %s\npid: %s\ninstance_id: %s\ncontainer_id: %s' % (VER, pid, instance_id, container_id)
+        return '\n\nVER: %s\npid: %s\ninstance_id: %s\ncontainer_id: %s\n' % (VER, pid, instance_id, container_id)
 
     def _get_instance_id(self):
         try:
