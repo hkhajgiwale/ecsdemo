@@ -8,7 +8,6 @@
 
 # THIS ONLY WORKS WITH PYTHON3.7 and higher
 
-import time
 import logging
 import traceback
 import os
@@ -48,6 +47,7 @@ class Handler(BaseHTTPRequestHandler):
             '/': self._default,
             '/ping': self._ping,
             '/toggle_cpu': self._toggle_cpu,
+            '/keepalive': self._keepalive,
         }
 
         if self.path in paths:
@@ -69,6 +69,15 @@ class Handler(BaseHTTPRequestHandler):
         code = 200
         content = 'pong'
         return code, content
+
+    def _keepalive(self):
+        self.protocol_version = 'HTTP/1.1'
+        start = time.time()
+        # Send time string every x second
+        while True:
+            time.sleep(10)
+            body = str(time.time() - start)
+            self._respond(200, body)
 
     def _toggle_cpu(self):
         global load_cpu
