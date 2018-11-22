@@ -1,9 +1,11 @@
-FROM python:3.7.1
+FROM python:3.7.1-alpine
 
-RUN pip install requests
+COPY . /app
+WORKDIR /app
 
-WORKDIR /usr/src/app
+RUN pip install -r requirements.txt
 
-COPY . .
+RUN apt-get update && apt-get install -y \
+    curl
 
 CMD ["python", "./webserver.py"]
