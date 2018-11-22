@@ -75,9 +75,9 @@ class Handler(BaseHTTPRequestHandler):
         start = time.time()
         # Send time string every x second
         while True:
-            time.sleep(10)
             body = str(time.time() - start)
             self._respond(200, body)
+            time.sleep(10)
 
     def _toggle_cpu(self):
         global load_cpu
