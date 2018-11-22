@@ -46,6 +46,7 @@ class Handler(BaseHTTPRequestHandler):
         paths = {
             '/': self._default,
             '/ping': self._ping,
+            '/ping_wait': self._ping_wait,
             '/toggle_cpu': self._toggle_cpu,
             '/keepalive': self._keepalive,
         }
@@ -69,6 +70,12 @@ class Handler(BaseHTTPRequestHandler):
         code = 200
         content = 'pong'
         return code, content
+
+    def _ping_wait(self):
+        code = 200
+        content = 'pong'
+        time.sleep(30)
+        return code, content        
 
     def _keepalive(self):
         self.protocol_version = 'HTTP/1.1'
