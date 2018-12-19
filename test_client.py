@@ -13,7 +13,7 @@ def main():
     start = time.time()
     while True:
         print (time.time() - start)
-        r = s.get('http://%s' % endpoint)
+        r = s.get('http://%s/ping_wait' % endpoint)
         print(r.text)
         time.sleep(10)
 

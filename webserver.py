@@ -48,7 +48,7 @@ class Handler(BaseHTTPRequestHandler):
             '/ping': self._ping,
             '/ping_wait': self._ping_wait,
             '/toggle_cpu': self._toggle_cpu,
-            '/keepalive': self._keepalive,
+            '/keepalive': self._keepalive,            
         }
 
         if self.path in paths:
@@ -69,6 +69,8 @@ class Handler(BaseHTTPRequestHandler):
     def _ping(self):
         code = 200
         content = 'pong'
+        if os.path.isfile('/stop_ping'):
+            time.sleep(60*60)
         return code, content
 
     def _ping_wait(self):
