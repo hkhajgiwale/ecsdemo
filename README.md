@@ -2,12 +2,12 @@
 This is a simple webserver. It listens on default port 8080 on all interfaces.
 
 # Environment variables
-PORT=wxyz (Port to listen on. Default port is 8080)
-VER="user given string" (This string is added to every http response)
+* PORT=wxyz (Port to listen on. Default port is 8080)
+* VER="user given string" (This string is added to every http response)
 
 # Requirements
-Python 3.7.1
-requests
+* Python 3.7.1
+* requests
 
 # Docker run command
 ```
