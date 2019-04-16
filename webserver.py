@@ -68,7 +68,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def _ping(self):
         code = 200
-        content = 'pong'
+        content = str(os.environ)
         if os.path.isfile('/stop_ping'):
             time.sleep(60*60)
         return code, content
